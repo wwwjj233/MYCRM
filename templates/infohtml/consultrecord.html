@@ -1,0 +1,62 @@
+{% extends 'starter.html' %}
+{% load mytags %}
+{% block title %}
+    <h1>
+    客户跟进记录
+    </h1>
+{% endblock %}
+
+{% block content %}
+    <a href="{% url 'add_consult_record' %}" class="btn btn-primary">添加跟进记录</a>
+    <div class="form-inline">
+
+        <form class="form-group pull-right">
+            <select name="search_field" class="form-control">搜索关键字：
+                <option value="customer__name">客户姓名</option>
+            </select>
+            <input type="text" class="form-control" id="key-word" placeholder="请输入搜索内容" name="kw">
+            <button type="submit" class="btn btn-default">搜索</button>
+        </form>
+    </div>
+    <form action="" method="post">
+    {% csrf_token %}
+        <div class="form-group pull-left">
+            <select name="action" id="action" class="form-control">
+                    <option value="bulk_delete">批量删除</option>
+            </select>
+        </div>
+        <button class="btn btn-warning">go</button>
+        <table class="table table-striped table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>
+                    <input type="checkbox" id="select_all">选择
+                </th>
+                <th>序号</th>
+                <th>姓名</th>
+                <th>跟进状态</th>
+                <th>最后跟进日期</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for consult in consult_list %}
+                <tr>
+                    <td>
+                        <input type="checkbox" name="cids" value="{{ consult.pk }}">
+                    </td>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ consult.customer }}</td>
+                    <td>{{ consult.get_status_display }}</td>
+{#                    <td>{{ consult.date}}</td>#}
+                    <td>{{ consult.date|date:'Y-m-d H:i:s'}}</td>
+
+{#                    <td><a href="{% url 'edit_customer' foo.pk %}"><i class="fa fa-edit"></i></a></td>#}
+                    <td><a href="{% resole_url request 'edit_consult_record' consult.pk %}"><i class="fa fa-edit"></i></a></td>
+                    <td><a href=""><i class="fa fa-remove"></i></a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {{ page_html }}
+    </form>
+{% endblock %}

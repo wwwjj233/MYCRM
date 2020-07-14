@@ -1,0 +1,17 @@
+
+
+{% for menu_k,menu_v in order_dict.items %}
+    <li class="treeview {{ menu_v.class }} ">
+        <a href="#"><i class="fa fa-link"></i><span class="">{{ menu_v.title }}</span>
+            <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+        </a>
+        <ul class="treeview-menu">
+            {% for emenu in menu_v.children %}
+                <li class="{{ emenu.class }}"><a href="{{ emenu.url }}">{{ emenu.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </li>
+{% endfor %}
+

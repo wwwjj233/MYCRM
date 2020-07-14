@@ -1,0 +1,56 @@
+{% extends 'starter.html' %}
+{% load mytags %}
+{% block title %}
+    <h1>
+    客户反馈记录
+    </h1>
+{% endblock %}
+
+{% block content %}
+    <div class="form-inline">
+        <form class="form-group pull-right">
+            <select name="search_field" class="form-control">搜索关键字：
+                <option value="customer__name">客户姓名</option>
+            </select>
+            <input type="text" class="form-control" id="key-word" placeholder="请输入搜索内容" name="kw">
+            <button type="submit" class="btn btn-default">搜索</button>
+        </form>
+    </div>
+    <form action="" method="post">
+    {% csrf_token %}
+    {{ formset.management_form }}
+        <table class="table table-striped table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>姓名</th>
+                <th>所购买的产品</th>
+                <th>评价</th>
+                <th>反馈日期</th>
+
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for field in formset %}
+                <tr>
+                    {{ field.id }}
+                    <td>{{ forloop.counter }}</td>
+{#                    <td>{{ field.customer }}</td>#}
+                    <td>{{ field.instance.customer }}</td>
+                    <td class="hidden">{{ field.customer }}</td>
+                    <td>{{ field.instance.product }}</td>
+                    <td class="hidden">{{ field.product }}</td>
+                    <td>{{ field.appraise}}</td>
+                    <td>{{ field.instance.date}}</td>
+                    <td class="hidden">{{ field.situation }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {{ formset.errors}}
+        <button class="btn btn-warning">保存</button>
+        {{ page_html }}
+
+    </form>
+{% endblock %}
